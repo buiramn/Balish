@@ -69,8 +69,8 @@ def gh_headers():
 
 def github_load():
     """GitHub-тан JSON оқу — (data, sha) қайтарады."""
-    url = f"{API}/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}"
-    r = requests.get(url, headers=gh_headers(), params={"ref": GITHUB_BRANCH})
+   url = f"{API}/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}?ref={GITHUB_BRANCH}"
+    r = requests.get(url, headers=gh_headers())
     r.raise_for_status()
     resp = r.json()
     content = base64.b64decode(resp["content"]).decode("utf-8")
@@ -78,7 +78,7 @@ def github_load():
 
 def github_save(data: dict, sha: str, message: str):
     """JSON-ды GitHub-қа жүктеу."""
-    url = f"{API}/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}"
+   url = f"{API}/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}?ref={GITHUB_BRANCH}"
     encoded = base64.b64encode(
         json.dumps(data, ensure_ascii=False, indent=2).encode()
     ).decode()
