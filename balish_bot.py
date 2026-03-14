@@ -29,7 +29,7 @@ BOT_TOKEN     = os.getenv("BOT_TOKEN")
 GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN")
 GITHUB_REPO   = os.getenv("GITHUB_REPO", "buiramn/Balish")
 GITHUB_FILE   = os.getenv("GITHUB_FILE", "balish-menu.json")
-GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "home")
+GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "main")
 ADMIN_IDS     = set()  # Бос = барлығына ашық. Мысалы: {123456789}
 
 if not BOT_TOKEN:
