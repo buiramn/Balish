@@ -94,16 +94,18 @@ nav{background:var(--red);padding:0.6rem 1.25rem;display:flex;justify-content:sp
 
 /* PRODUCT GRID */
 .items-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;padding-bottom:1.5rem}
-.card{background:var(--white);border-radius:13px;border:1px solid rgba(193,58,43,0.1);padding:0.8rem 0.7rem;cursor:grab;transition:transform 0.12s,border-color 0.15s;user-select:none;-webkit-user-select:none}
-.card:active{cursor:grabbing}
+.card{background:var(--white);border-radius:16px;border:1px solid rgba(193,58,43,0.08);overflow:hidden;cursor:grab;transition:transform 0.12s,box-shadow 0.15s;user-select:none;-webkit-user-select:none;box-shadow:0 2px 8px rgba(26,10,5,0.06)}
+.card:active{cursor:grabbing;transform:scale(0.97)}
 .card.dragging{opacity:0.35;transform:scale(0.95)}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.45rem}
-.card-icon{font-size:1.85rem}
-.tap-add{width:26px;height:26px;border-radius:50%;background:var(--red);color:var(--cream);border:none;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:opacity 0.15s;flex-shrink:0}
-.tap-add:hover{opacity:0.8}
-.card-name{font-weight:700;font-size:0.81rem;color:var(--dark);margin-bottom:2px}
-.card-desc{font-size:0.68rem;color:var(--muted);line-height:1.32;margin-bottom:0.45rem}
-.card-price{font-size:0.8rem;font-weight:700;color:var(--red)}
+.card-photo{width:100%;aspect-ratio:1/1;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+.card-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.card-photo .card-icon{font-size:3rem}
+.tap-add{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:var(--red);color:var(--cream);border:none;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:opacity 0.15s;box-shadow:0 2px 6px rgba(193,58,43,0.35)}
+.tap-add:hover{opacity:0.85}
+.card-body{padding:0.6rem 0.65rem 0.7rem}
+.card-name{font-weight:700;font-size:0.82rem;color:var(--dark);margin-bottom:2px}
+.card-desc{font-size:0.67rem;color:var(--muted);line-height:1.35;margin-bottom:0.4rem}
+.card-price{font-size:0.82rem;font-weight:700;color:var(--red)}
 
 /* FOOTER */
 footer{background:var(--red);padding:1.3rem 1.25rem;text-align:center;margin-top:0.5rem}
@@ -124,11 +126,11 @@ footer strong{opacity:1}
 .hero-step.exit{opacity:0;transform:translateY(-16px)}
 
 /* SUCCESS MODAL ─────────────────────────────────────────────── */
-.success-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
-.success-overlay.show{opacity:1;pointer-events:all}
-.success-modal{background:var(--white);border-radius:20px;padding:1.8rem 1.4rem 1.5rem;width:300px;max-width:90vw;text-align:center;transform:scale(0.85);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden}
+.success-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;visibility:hidden}
+.success-overlay.show{opacity:1;pointer-events:all;visibility:visible}
+.success-modal{background:var(--white);border-radius:20px;padding:1.8rem 1.4rem 1.5rem;width:300px;max-width:90vw;text-align:center;transform:scale(0.85);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:visible}
 .success-overlay.show .success-modal{transform:scale(1)}
-.success-lottie{width:140px;height:140px;margin:0 auto 0.5rem}
+.success-lottie{width:140px;height:140px;margin:0 auto 0.5rem;display:block}
 .success-title{font-family:'MuseoSansCyrl',sans-serif;font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:0.35rem}
 .success-sub{font-size:0.78rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.5}
 .success-close{width:100%;border:none;border-radius:2rem;padding:0.75rem;font-size:0.85rem;font-family:'MuseoSansCyrl',sans-serif;font-weight:700;cursor:pointer;background:var(--red);color:var(--cream);transition:opacity 0.15s}
@@ -331,13 +333,17 @@ function renderGrid() {
         ontouchstart="onTouchStart(event,${item.id})"
         ontouchmove="onTouchMove(event)"
         ontouchend="onTouchEnd(event,${item.id})">
-        <div class="card-top">
-          <span class="card-icon">${item.icon}</span>
+        <div class="card-photo">
+          ${item.photo
+            ? `<img src="${item.photo}" alt="${item.name}" loading="lazy">`
+            : `<span class="card-icon">${item.icon}</span>`}
           <button class="tap-add" onclick="addToOrder(${item.id})">+</button>
         </div>
-        <div class="card-name">${item.name}</div>
-        <div class="card-desc">${item.desc}</div>
-        <div class="card-price">${item.price.toLocaleString()} ₸</div>
+        <div class="card-body">
+          <div class="card-name">${item.name}</div>
+          <div class="card-desc">${item.desc}</div>
+          <div class="card-price">${item.price.toLocaleString()} ₸</div>
+        </div>
       </div>`).join('');
 }
 
@@ -498,6 +504,7 @@ lottie.loadAnimation({
 });
 
 
+
 /* HERO STEPS ANIMATION ──────────────────────────────────────── */
 (function() {
   const steps = document.querySelectorAll('.hero-step');
@@ -532,34 +539,45 @@ function launchConfetti() {
   }
 }
 
+
+
+/* ── SUCCESS MODAL ANIMATION ───────────────────────────────────
+   Pre-render into off-screen div at page load, then replay on show
+──────────────────────────────────────────────────────────────── */
+
 function showSuccess() {
   const overlay = document.getElementById('success-overlay');
-  overlay.classList.add('show');
-  launchConfetti();
-  if (successAnim) { successAnim.destroy(); successAnim = null; }
   const container = document.getElementById('success-lottie');
+  // Destroy old animation
+  if (successAnim) { successAnim.destroy(); successAnim = null; }
   container.innerHTML = '';
-  setTimeout(function() {
-    successAnim = lottie.loadAnimation({
-      container: container,
-      renderer: 'svg',
-      loop: false,
-      autoplay: true,
-      animationData: chef4Data,
-    });
-    successAnim.addEventListener('complete', function() {
-      setTimeout(function() {
-        if (successAnim) successAnim.goToAndPlay(0, true);
-      }, 4000);
-    });
-  }, 50);
+  // Overlay is already display:flex (just invisible) — load animation NOW
+  successAnim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: false,
+    autoplay: false,
+    animationData: chef4Data,
+    rendererSettings: { preserveAspectRatio: 'xMidYMid meet' }
+  });
+  successAnim.addEventListener('DOMLoaded', function() {
+    // Now overlay is visible, start animation
+    overlay.classList.add('show');
+    launchConfetti();
+    successAnim.play();
+  });
+  successAnim.addEventListener('complete', function() {
+    setTimeout(function() {
+      if (successAnim) successAnim.goToAndPlay(17, true);
+    }, 4000);
+  });
 }
 
 function closeSuccess(e) {
   if (e.target === document.getElementById('success-overlay')) closeSuccessBtn();
 }
 function closeSuccessBtn() {
-  document.getElementById('success-overlay').classList.remove('show');
+  const ov = document.getElementById('success-overlay'); ov.classList.remove('show'); setTimeout(function(){ if(successAnim){successAnim.stop();} }, 300);
 }
 
 </script>
