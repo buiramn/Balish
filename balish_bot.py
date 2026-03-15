@@ -49,7 +49,7 @@ log = logging.getLogger(__name__)
     ADD_NAME, ADD_DESC, ADD_PRICE, ADD_ICON, ADD_CAT,
     EDIT_CHOOSE_FIELD, EDIT_VALUE, EDIT_PHOTO,
     DEL_CONFIRM,
-) = range(9)
+) = range(10)
 
 CAT_LABELS = {
     "sweet":  "🍮 Тәтті",
