@@ -40,7 +40,8 @@
       "icon": "🍮",
       "name": "Трайфл",
       "desc": "Крем, жеміс, бисквит қабаттары",
-      "price": 1200
+      "price": 1200,
+      "photo": "images/Трайфл_AgACAgIA.jpg"
     },
     {
       "id": 2,
